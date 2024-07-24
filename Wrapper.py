@@ -41,7 +41,8 @@ def main():
     if (Mode == 1):
         face_image = cv2.imread(ImagePath)
 
-        # Detect facial landmarks
+        # Detect facial landmarks and return number of 
+        # face points and their coordinate
         num_points, points_image = facialLandmarksDetection(face_image)
     else :
         pass
