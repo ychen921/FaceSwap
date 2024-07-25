@@ -4,6 +4,7 @@ import numpy as np
 import argparse
 
 from Mics.FacialLandmarks import facialLandmarksDetection
+from Mics.Traditional import traditionalFaceSwap
 
 
 def main():
@@ -12,13 +13,14 @@ def main():
     Parser.add_argument('--VideoName', default='Test1', type=str,help='File name of the input video stream.')
     Parser.add_argument('--ImageName', default='Rambo', type=str,help='File name of the target the face image.')
     Parser.add_argument('--Mode', type=int, default=1, help='Mode 1 for swapping the face in video with an image. Mode 2 for swap two faces within a video')
-    Parser.add_argument('--method', default='TPS', type=str, help='affine, tri, tps, prnet')
+    Parser.add_argument('--Method', default='tri', type=str, help='affine, tri, tps, prnet')
 
     Args = Parser.parse_args()
     DataPath = Args.DataPath
     VideoName = Args.VideoName
     ImageName = Args.ImageName
     Mode = Args.Mode
+    Method = Args.Method
 
     VideoPath = DataPath + VideoName + '.mp4'
     ImagePath = DataPath + ImageName + '.jpg'
@@ -43,7 +45,27 @@ def main():
 
         # Detect facial landmarks and return number of 
         # face points and their coordinate
-        num_points, points_image = facialLandmarksDetection(face_image)
+        num_points, points_1 = facialLandmarksDetection(face_image)
+
+        
+        while(cap.isOpened()):
+            ret, frame = cap.read()
+            if (ret == True):
+
+                # Face swap using Position map Regression Network
+                if (Method == "prnet"):
+                    pass
+
+                # Traditional method (TPS or Triangulation)
+                else:
+                    num_points, points_2 = facialLandmarksDetection(frame)
+                    if (num_points == 0):
+                        continue
+                    traditionalFaceSwap(image_1=face_image, image_2=frame, points_1=points_1, points_2=points_2, Method=Method)
+
+
+
+    # Swap 2 faces in a video
     else :
         pass
 

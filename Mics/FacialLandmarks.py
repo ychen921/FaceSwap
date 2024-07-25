@@ -4,6 +4,12 @@ import dlib
 from imutils import face_utils
 
 def facialLandmarksDetection(image):
+    """
+    Detect face landmarks
+    Input: Image(np array)
+    Output: Number of landmarks (int)
+            landmark coordinates (list)
+    """
     RGB_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
