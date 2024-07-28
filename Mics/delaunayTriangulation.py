@@ -32,6 +32,7 @@ def delaunayTriangulation(img, rect, points):
 
     triangleList = subdiv.getTriangleList()
     
+    # store the index of dalaunay triangulation in points
     delaunayTri = []
     pt = []
 
@@ -61,7 +62,38 @@ def delaunayTriangulation(img, rect, points):
             cv2.line(img_copy, pt3, pt1, (255, 255, 255), 1, cv2.LINE_AA, 0)
 
         pt = []
-        
+
     return delaunayTri
     # cv2.imshow("win_delaunay", img_copy)
     # cv2.waitKey(100)
+
+def affineWrap(src_img, src_tri, targ_tri, size):
+    affine = cv2.getAffineTransform( np.float32(src_tri), np.float32(targ_tri))
+    wrapped = cv2.warpAffine(src_img, affine, (size[0], size[1]), None, flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT_101 )
+
+    return wrapped
+
+
+def wrapTraingulation(img1, img2, t1, t2, method):
+    x1, y1, w1, h1 = cv2.boundingRect(np.float32([t1]))
+    x2, y2, w2, h2 = cv2.boundingRect(np.float32([t2]))
+
+    Rect1, Rect2 = [], []
+    for i in range(3):
+        Rect1.append((t1[i,0] - x1, t1[i,1] - y1))
+        Rect2.append((t2[i,0] - x2, t2[i,1] - y2))
+
+    # The mask for filling triangles
+    mask = np.zeros((h2, w2, 3), dtype=np.float32)
+
+    # Filling color in triangle
+    cv2.fillConvexPoly(mask, np.int32(Rect2), (1.0, 1.0, 1.0), 16, 0)
+    img1Rect = img1[y1 : y1+h1, x1 : x1+w1]
+    img2Rect = np.zeros((h2, w2), dtype = img1Rect.dtype)
+
+    size = (w2, h2)
+    
+    if (method == 'affine'):
+        img2Rect = affineWrap(src_img=img1Rect, src_tri=Rect1, targ_tri=Rect2, size=size)
+    else:
+        pass

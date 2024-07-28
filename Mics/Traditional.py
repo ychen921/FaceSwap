@@ -1,16 +1,24 @@
 import cv2
 import numpy as np
 
-from Mics.delaunayTriangulation import delaunayTriangulation
+from Mics.delaunayTriangulation import delaunayTriangulation, wrapTraingulation
 
 def triangulation(image1, image2, image1Wraped, hull1, hull2, method):
 
     # Delanauy traingulation for convex hull points
     rect = (0, 0, image2.shape[1], image2.shape[0])
     dt = delaunayTriangulation(image2, rect, hull2)
-
+    
     if len(dt) == 0:
         quit()
+
+    for i in range(len(dt)):
+        t1, t2 = [], []
+        
+        for j in range(3):
+            t1.append(hull1[dt[i, j]])
+            t2.append(hull2[dt[i, j]])
+
 
 def traditionalFaceSwap(image_1, image_2, points_1, points_2, Method):
     hull1, hull2 = [], []
