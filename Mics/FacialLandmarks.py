@@ -19,6 +19,7 @@ def facialLandmarksDetection(image):
     faces = detector(gray_image, 1)
     
     face_coordinates = []
+    hull_list = []
     for i, face in enumerate(faces):
         shape = predictor(gray_image, face)
         shape = face_utils.shape_to_np(shape)
@@ -34,4 +35,8 @@ def facialLandmarksDetection(image):
             cv2.circle(RGB_image, (x, y), 5, (0, 0, 255), -1)
             face_coordinates.append((x, y))
 
-    return len(faces), face_coordinates
+        hull = cv2.convexHull(np.array(face_coordinates), False)
+        hull = hull.reshape((hull.shape[0], hull.shape[2]))
+        hull_list.append(hull)
+
+    return len(faces), face_coordinates, hull_list

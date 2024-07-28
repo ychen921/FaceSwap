@@ -45,7 +45,7 @@ def main():
 
         # Detect facial landmarks and return number of 
         # face points and their coordinate
-        num_points, points_1 = facialLandmarksDetection(face_image)
+        num_points, points_1, hull_1 = facialLandmarksDetection(face_image)
 
         
         while(cap.isOpened()):
@@ -58,10 +58,10 @@ def main():
 
                 # Traditional method (TPS or Triangulation)
                 else:
-                    num_points, points_2 = facialLandmarksDetection(frame)
+                    num_points, points_2, hull_2 = facialLandmarksDetection(frame)
                     if (num_points == 0):
                         continue
-                    traditionalFaceSwap(image_1=face_image, image_2=frame, points_1=points_1, points_2=points_2, Method=Method)
+                    traditionalFaceSwap(image_1=face_image, image_2=frame, points_1=points_1, points_2=points_2, hull_2 = hull_2, Method=Method)
 
 
 
