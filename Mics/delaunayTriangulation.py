@@ -52,7 +52,7 @@ def delaunayTriangulation(img, rect, points, show=False):
 
     return triangleList
 
-def srcTraingulation(image1, dst_triangles, points_1, points_2, show=True):
+def srcTraingulation(image1, dst_triangles, points_1, points_2, show=False):
     image_copy = image1.copy()
     
     src_triangles = []
