@@ -13,7 +13,7 @@ def main():
     Parser.add_argument('--VideoName', default='Test1', type=str,help='File name of the input video stream.')
     Parser.add_argument('--ImageName', default='Rambo', type=str,help='File name of the target the face image.')
     Parser.add_argument('--Mode', type=int, default=1, help='Mode 1 for swapping the face in video with an image. Mode 2 for swap two faces within a video')
-    Parser.add_argument('--Method', default='tri', type=str, help='affine, tri, tps, prnet')
+    Parser.add_argument('--Method', default='tps', type=str, help='affine, tri, tps, prnet')
 
     Args = Parser.parse_args()
     DataPath = Args.DataPath

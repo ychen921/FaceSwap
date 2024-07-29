@@ -2,6 +2,8 @@ import cv2
 import numpy as np
 
 from Mics.delaunayTriangulation import delaunayTriangulation, srcTraingulation
+from Mics.ThinPlateSpline import thisPlateSpine
+from Mics.Utils import bilinearInterpolation
 
 def InternalCoordinates(Barycentric, xy_coord):
     sum = np.sum(Barycentric, axis=0)
@@ -30,39 +32,6 @@ def InternalCoordinates(Barycentric, xy_coord):
     dst_internal_pts = xy_coord[:, internal_index]
 
     return internal_pts, dst_internal_pts
-
-def bilinearInterpolation(pts, image):
-    pixel_values = np.zeros((pts.shape[1], 3))
-    xy_coor = pts[0:2, :]
-
-    up_x = np.ceil(pts[0,:]).astype(np.uint64)
-    up_y = np.ceil(pts[1,:]).astype(np.uint64)
-
-    up_x[up_x>=image.shape[1]] = image.shape[1] - 1
-    up_y[up_y>=image.shape[0]] = image.shape[0] - 1
-
-    down_x = np.floor(pts[0,:]).astype(np.uint64)
-    down_y = np.floor(pts[1,:]).astype(np.uint64)
-
-    a = xy_coor[0,:] - down_x
-    b = xy_coor[1,:] - down_y
-
-    wt_top_right = (a*b).reshape((pts.shape[1],1))
-    wt_top_left = ((1-a)*b).reshape((pts.shape[1],1))
-    wt_down_left = ((1-a)*(1-b)).reshape((pts.shape[1],1))
-    wt_down_right = (a*(1-b)).reshape((pts.shape[1],1))
-
-    wt_top_right = np.repeat(wt_top_right, 3, axis=1)
-    wt_top_left = np.repeat(wt_top_left, 3, axis=1)
-    wt_down_left = np.repeat(wt_down_left, 3, axis=1)
-    wt_down_right = np.repeat(wt_down_right, 3, axis=1)
-
-    pixel_values = (wt_top_right*image[up_y[:],up_x[:]]) + (wt_top_left*image[up_y[:],down_x[:]]) + \
-            (wt_down_left*image[down_y[:],down_x[:]]) + (wt_down_right*image[down_y[:],up_x[:]])
-    
-    pixel_values[pixel_values>255] = 255
-
-    return pixel_values.astype(np.uint8)
 
 def boundingRect(points):
     rect = list()
@@ -113,6 +82,7 @@ def triangulationWrap(image1, image2, src_tri, dst_tri, hull_2):
         # Convert the values to homogeneous coordinates
         src_coord = src_coord / src_coord[2]
 
+        # Bilinear Interpolation
         pixel_values = bilinearInterpolation(pts=src_coord, image=image1)
         image2[img2_interal_pts[1], img2_interal_pts[0]] = pixel_values
     
@@ -123,8 +93,6 @@ def triangulationWrap(image1, image2, src_tri, dst_tri, hull_2):
     cv2.fillPoly(mask, [np.int32(hull_2)], (255, 255, 255))
 
     final_swap = cv2.seamlessClone(np.uint8(image2), np.uint8(img2_copy), mask, rect_center, cv2.NORMAL_CLONE)
-    cv2.imshow("Face swap", final_swap)
-    cv2.waitKey(1)
     return final_swap
 
 def triangulation(image1, image2, points_1, points_2, hull2, method):
@@ -140,11 +108,15 @@ def triangulation(image1, image2, points_1, points_2, hull2, method):
     src_traingles = srcTraingulation(image1, dst_triangles, points_1, lm_points_2,)
 
     final_swap = triangulationWrap(image1, image2, src_tri=src_traingles, dst_tri=dst_triangles, hull_2=np.array(hull2))
-
+    return final_swap
     
 
-def traditionalFaceSwap(image_1, image_2, points_1, points_2, hull_2, Method):
+def traditionalFaceSwap(image_1, image_2, points_1, points_2, hull_2, Method, show=False):
     if (Method == "tps"):
-        pass
+        final_swap = thisPlateSpine(image_1, image_2, np.array(points_1), np.array(points_2), hull_2)
     else:
-        triangulation(image_1, image_2, points_1, points_2, hull_2, Method)
+        final_swap = triangulation(image_1, image_2, points_1, points_2, hull_2, Method)
+
+    if show:
+        cv2.imshow("Face Swap - tradition", final_swap)
+        cv2.waitKey(1)
