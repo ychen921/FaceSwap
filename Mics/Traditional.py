@@ -120,3 +120,5 @@ def traditionalFaceSwap(image_1, image_2, points_1, points_2, hull_2, Method, sh
     if show:
         cv2.imshow("Face Swap - tradition", final_swap)
         cv2.waitKey(1)
+
+    return final_swap
