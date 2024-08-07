@@ -10,7 +10,8 @@ def facialLandmarksDetection(image):
     Output: Number of landmarks (int)
             landmark coordinates (list)
     """
-    RGB_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    RGB_image = image.copy()
+    # RGB_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     detector = dlib.get_frontal_face_detector()
@@ -32,12 +33,14 @@ def facialLandmarksDetection(image):
         
         # Draw circles on the facial landmarks
         for (x, y) in shape:
-            cv2.circle(RGB_image, (x, y), 5, (0, 0, 255), -1)
+            cv2.circle(RGB_image, (x, y), 1, (0, 0, 255), 2)
             face_coordinates.append((x, y))
 
         hull = cv2.convexHull(np.array(face_coordinates), False)
         hull = hull.reshape((hull.shape[0], hull.shape[2]))
         hull_list.append(hull)
+
+        # cv2.imwrite('../Output/FacialLandmarks.jpg', RGB_image)
 
     return len(faces), face_coordinates, hull_list
 

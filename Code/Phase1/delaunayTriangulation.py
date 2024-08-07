@@ -15,7 +15,7 @@ def rect_contains(rectangle, point):
         return False
     return True
 
-def delaunayTriangulation(img, rect, points, show=False):
+def delaunayTriangulation(img, rect, points, show=True):
     """
     Calculate Dalaunay Traingulation
     refer to https://learnopencv.com/delaunay-triangulation-and-voronoi-diagram-using-opencv-c-python/
@@ -45,10 +45,11 @@ def delaunayTriangulation(img, rect, points, show=False):
                 cv2.line(img_copy, pt3, pt1, (255, 255, 255), 1, cv2.LINE_AA, 0)
 
         for p in points:
-            cv2.circle(img_copy, p, 2, (0,0,255), -1)
+            cv2.circle(img_copy, p, 1, (0,0,255), 2)
 
-        cv2.imshow("win_delaunay", img_copy)
-        cv2.waitKey(1)
+        # cv2.imshow("win_delaunay", img_copy)
+        cv2.imwrite('../Output/delaunay_tri.jpg', img_copy)
+        # cv2.waitKey(1)
 
     return triangleList
 
