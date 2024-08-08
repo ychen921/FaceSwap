@@ -78,7 +78,7 @@ In the following images, we represents our results of comparision of Triangulati
   <tr>
     <td align="center">
       <img src="./Figures/Test1.gif" alt="Image 1" style="width:80%;;"><br>
-      <sub>Original video</sub>
+      <sub>Original Video</sub>
     </td>
     <td align="center">
       <img src="./Figures/Test1-mode1-tri.gif" alt="Image 2" style="width:80%;;"><br>
@@ -103,7 +103,7 @@ In the following images, we represents our results of comparision of Triangulati
   <tr>
     <td align="center">
       <img src="./Figures/Test2.gif" alt="Image 1" style="width:80%;;"><br>
-      <sub>Original video</sub>
+      <sub>Original Video</sub>
     </td>
     <td align="center">
       <img src="./Figures/Test2-mode2-tri.gif" alt="Image 2" style="width:80%;;"><br>
@@ -121,3 +121,9 @@ In the following images, we represents our results of comparision of Triangulati
     </td>
   </tr>
 </table>
+
+## References
+- CMSC 733: Computer Processing of Visual Information. (2024). Project 2. Retrieved from https://cmsc733.github.io/2022/proj/p2/
+- Black, M. (n.d.). Inverse Warper. University of North Carolina at Chapel Hill. Retrieved from https://www.cs.unc.edu/~ibr/src/InverseWarper/
+- Feng, Y., Wu, F., Shao, X., Wang, Y., & Zhou, X. (2018). Joint 3d face reconstruction and dense alignment with position map regression network. In Proceedings of the European conference on computer vision (ECCV) (pp. 534-551).
+- Feng, Y. (n.d.). PRNet. GitHub. Retrieved from https://github.com/yfeng95/PRNet
