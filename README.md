@@ -2,7 +2,7 @@
 The aim of this project is to implement an end-to-end pipline to swap faces in a video just like [Snapchat's face swap filter](https://www.google.com). We implemented two mode. One is swap a source face image to a video also with a face. Another one will be swapping two faces in a video.
 
 ## Phase 1: Traditional Approach
-| ![](./Figures/Overview.png)| 
+| <img src="./Figures/Overview.png" alt="Adjusted Image" style="width:60%;">| 
 |:--:| 
 | *Overview of the face replacement pipeline.* |
 
