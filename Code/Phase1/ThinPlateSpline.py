@@ -80,12 +80,22 @@ def thisPlateSpine(image1, image2, points_1, points_2, hulls_2):
 
     rect = cv2.boundingRect(np.array(hulls_2))
     rect_center = (int(rect[0]+rect[2]/2), int(rect[1]+rect[3]/2))
+    
+    ####################
+    # mask = np.zeros(image2.shape, dtype=np.uint8)
+    # cv2.fillPoly(mask, [np.int32(hulls_2)], (255, 255, 255))
+    # cv2.imwrite('../Output/Wraped_tps_mask.jpg', mask)
+    ####################
+
 
     pixel_values = bilinearInterpolation(pts=face_coord.T, image=image1)
     img2_copy = image2.copy()
 
     image2[Y[:,0], X[:,0]] = pixel_values
+    # mask[Y[:,0], X[:,0]] = pixel_values
 
     final_swap = cv2.seamlessClone(image2, img2_copy, mask, rect_center, cv2.NORMAL_CLONE)
-
+    
+    # cv2.imwrite('../Output/Wraped_tps.jpg', mask)
+    
     return final_swap

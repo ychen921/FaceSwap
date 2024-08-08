@@ -69,7 +69,7 @@ def main():
         # Detect facial landmarks and return number of 
         # face points and their coordinate
         _, points_1, _ = facialLandmarksDetection(face_image)
-
+        
         count = 1
         prev_pos = None
         while(cap.isOpened()):

@@ -48,6 +48,7 @@ def boundingRect(points):
 
 def triangulationWrap(image1, image2, src_tri, dst_tri, hull_2):
     img2_copy = image2.copy()
+    test_img = np.zeros_like(image2)
 
     for i in range(len(dst_tri)):
 
@@ -85,14 +86,19 @@ def triangulationWrap(image1, image2, src_tri, dst_tri, hull_2):
         # Bilinear Interpolation
         pixel_values = bilinearInterpolation(pts=src_coord, image=image1)
         image2[img2_interal_pts[1], img2_interal_pts[0]] = pixel_values
-    
+        test_img[img2_interal_pts[1], img2_interal_pts[0]] = pixel_values
+
     # Blending
     rect = cv2.boundingRect(hull_2)
     rect_center = (int(rect[0]+rect[2]/2), int(rect[1]+rect[3]/2))
     mask = np.zeros(image2.shape, dtype=np.uint8)
     cv2.fillPoly(mask, [np.int32(hull_2)], (255, 255, 255))
 
+    # cv2.imwrite('../Output/Wraped_tri.jpg', test_img)
+    # cv2.imwrite('../Output/Wraped_tri_empty.jpg', mask)
+
     final_swap = cv2.seamlessClone(np.uint8(image2), np.uint8(img2_copy), mask, rect_center, cv2.NORMAL_CLONE)
+
     return final_swap
 
 def triangulation(image1, image2, points_1, points_2, hull2, method):
