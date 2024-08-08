@@ -63,7 +63,7 @@ $$
 |:--:|:--:| 
 | *Binary face mask* | *Wraped image using TPS* |
 
-### Face Replacement and Blending
+### 3. Face Replacement and Blending
 In this part, we simply take all the pixels from the face in source image A, wrap them to fit target face B, and replace the pixels. However, the replaced pixels will not look natural as the lighting and edges look different. Therefore we need to blend the wrapped face.
 
 We followed a method called Poisson Blending to blend the warped face onto the target face B. The built-in function in OpenCV `cv2.seamlessClone()` was applied in this project.
